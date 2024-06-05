@@ -1,13 +1,13 @@
-export interface RedditPost {
-  kind: string;
-  data: Post
-}
-
 export interface RedditResponse {
   kind: string;
   data: {
     children: RedditPost[];
   };
+}
+
+export interface RedditPost {
+  kind: string;
+  data: Post
 }
 
 export interface Post {
@@ -19,11 +19,12 @@ export interface Post {
     ups: number;
     thumbnail: string;
     created_utc: number;
+    selftext_html :string
 }
 
 export interface CardPropsTypes {
     loading: boolean;
-    posts: object;
+    posts: any;
 }
 
 export interface MyHeaderProps {
@@ -33,7 +34,7 @@ export interface MyHeaderProps {
   }
 
 export interface SelfPropsType {
-    post: object;
+    post: Post;
   }
 
 

@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import he from "he"; // A library to decode HTML entities
-import { SelfPropsType } from "./TypeNode";
+import { SelfPropsType, } from "./TypeNode";
 
 const SelfHtml: React.FC<SelfPropsType> = ({ post }) => {
   const rawHtml = post.selftext_html || "";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import CardSection from "./Components/CardSection";
 import Header from "./Components/Header";
 import Aside from "./Components/Aside";
@@ -79,14 +79,22 @@ const App: React.FC = () => {
     );
   }
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.style.backgroundColor = "#0e1113";
+    } else {
+      document.body.style.backgroundColor = "#f1f5f9";
+    }
+  }, [isDarkMode]);
+
   return (
-    <div className={`${isDarkMode && "dark"}`}>
+    <div className={`${isDarkMode && "dark"} `}>
       <Header
         handleHamburgerMenu={handleHamburgerMenu}
         handleDarkMode={handleDarkMode}
         darkMode={isDarkMode}
       />
-      <div className="flex pt-[5rem] flex-row relative bg-slate-100 h-screen dark:bg-black">
+      <div className="flex pt-[5rem] mr-5 flex-row relative bg-[#f1f5f9] w-full  dark:bg-black">
         <Aside hamburgerMenu={hamburgerMenu} />
         <CardSection loading={loading} posts={posts} />
       </div>

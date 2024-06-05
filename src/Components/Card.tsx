@@ -24,15 +24,13 @@ const Card: React.FC<CardProps> = props => {
   function timeSinceCreation(unixTimestamp: number): string {
     const currentTime: Date = new Date();
     const createdTime: Date = new Date(unixTimestamp * 1000);
-    const timeDifference = currentTime - createdTime;
-
+    const timeDifference = currentTime.valueOf() - createdTime.valueOf();
+  
     // Calculate days, hours, and minutes
     const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      timeDifference % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(timeDifference % (1000 * 60 * 60) / (1000 * 60));
-
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  
     // Determine the appropriate unit to display
     if (days > 0) {
       return `${days} day${days > 1 ? "s" : ""} ago`;
@@ -42,6 +40,7 @@ const Card: React.FC<CardProps> = props => {
       return `${minutes} min${minutes > 1 ? "s" : ""} ago`;
     }
   }
+  
 
   return (
     <div className="w-full bg-white shadow-sm rounded-lg overflow-hidden dark:shadow-white  dark:bg-[#101214]">
