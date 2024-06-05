@@ -77,8 +77,8 @@ const Aside: React.FC<AsidePropsTypes> = ({ hamburgerMenu }) => {
   return (
     <aside
       className={`fixed ${hamburgerMenu
-        ? "left-0 transition-left duration-300 ease-in-out"
-        : "left-[-15rem]"} md:left-0 z-10 w-60 h-screen bg-white top-[4rem] px-5 border-r-2 border-b-1 border-neutral-200 dark:border-[#3e4142] border-solid dark:text-gray-200 dark:bg-[#0e1113] left-transition`}
+        ? "left-0 transition-left duration-300 ease-in-out" 
+        : "left-[-15rem]"} md:left-0 z-10 w-60 h-screen bg-white top-[4rem] px-5 border-r-2 border-b-1 border-neutral-200 dark:border-[#3e4142] border-solid dark:text-gray-200 dark:bg-[#0e1113] transition-all ease-in-out duration-150`}
     >
       <ul className="flex flex-col items-start justify-start py-4">
         {navLinks.map((links, index) => (

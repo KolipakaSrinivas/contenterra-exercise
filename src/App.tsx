@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CardSection from "./Components/CardSection";
 import Header from "./Components/Header";
 import Aside from "./Components/Aside";
@@ -38,9 +38,35 @@ const App: React.FC = () => {
     localStorage.setItem("theme", newMode ? "dark" : "light");
   };
 
+  useEffect(
+    () => {
+      if (isDarkMode) {
+        document.body.style.backgroundColor = "#0e1113";
+      } else {
+        document.body.style.backgroundColor = "#f1f5f9";
+      }
+    },
+    [isDarkMode]
+  );
+
   const handleHamburgerMenu = (): void => {
     setHamburgerMenu(prevState => !prevState);
   };
+
+  const handleScroll = () => {
+    console.log('scrool')
+    if (hamburgerMenu == true) {
+      setHamburgerMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const connectToDb = async (): Promise<RedditPost[]> => {
     try {
@@ -78,14 +104,6 @@ const App: React.FC = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.style.backgroundColor = "#0e1113";
-    } else {
-      document.body.style.backgroundColor = "#f1f5f9";
-    }
-  }, [isDarkMode]);
 
   return (
     <div className={`${isDarkMode && "dark"} `}>
