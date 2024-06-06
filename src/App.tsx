@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CardSection from "./Components/CardSection";
 import Header from "./Components/Header";
 import Aside from "./Components/Aside";
@@ -53,20 +53,25 @@ const App: React.FC = () => {
     setHamburgerMenu(prevState => !prevState);
   };
 
-  const handleScroll = () => {
-    console.log('scrool')
-    if (hamburgerMenu == true) {
-      setHamburgerMenu(false);
-    }
-  };
+  const handleScroll = useCallback(
+    () => {
+      if (hamburgerMenu) {
+        setHamburgerMenu(false);
+      }
+    },
+    [hamburgerMenu]
+  );
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+  useEffect(
+    () => {
+      window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    },
+    [handleScroll]
+  );
 
   const connectToDb = async (): Promise<RedditPost[]> => {
     try {
