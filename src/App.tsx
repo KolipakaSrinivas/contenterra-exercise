@@ -2,14 +2,23 @@ import { useState, useEffect, useCallback } from "react";
 import CardSection from "./Components/CardSection";
 import Header from "./Components/Header";
 import Aside from "./Components/Aside";
-import { RedditPost, RedditResponse } from "./Components/TypeNode";
+import { RedditPost } from "./Components/TypeNode";
+import source from "./data.json";
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [hamburgerMenu, setHamburgerMenu] = useState<boolean>(false);
   const [posts, setPosts] = useState<RedditPost[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setPosts(source.data.children)
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     const initialTheme =
@@ -38,78 +47,72 @@ const App: React.FC = () => {
     localStorage.setItem("theme", newMode ? "dark" : "light");
   };
 
-  useEffect(
-    () => {
-      if (isDarkMode) {
-        document.body.style.backgroundColor = "#0e1113";
-      } else {
-        document.body.style.backgroundColor = "#f1f5f9";
-      }
-    },
-    [isDarkMode]
-  );
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.style.backgroundColor = "#0e1113";
+    } else {
+      document.body.style.backgroundColor = "#f1f5f9";
+    }
+  }, [isDarkMode]);
 
   const handleHamburgerMenu = (): void => {
-    setHamburgerMenu(prevState => !prevState);
+    setHamburgerMenu((prevState) => !prevState);
   };
 
-  const handleScroll = useCallback(
-    () => {
-      if (hamburgerMenu) {
-        setHamburgerMenu(false);
-      }
-    },
-    [hamburgerMenu]
-  );
-
-  useEffect(
-    () => {
-      window.addEventListener("scroll", handleScroll);
-
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    },
-    [handleScroll]
-  );
-
-  const connectToDb = async (): Promise<RedditPost[]> => {
-    try {
-      const res = await fetch("https://www.reddit.com/r/reactjs.json");
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      const result: RedditResponse = await res.json();
-      return result.data.children;
-    } catch (error) {
-      setError((error as Error).message);
-      throw new Error((error as Error).message);
+  const handleScroll = useCallback(() => {
+    if (hamburgerMenu) {
+      setHamburgerMenu(false);
     }
-  };
+  }, [hamburgerMenu]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await connectToDb();
-        setPosts(response);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
+  }, [handleScroll]);
 
-    fetchData();
-  }, []);
+  // const connectToDb = async (): Promise<RedditPost[]> => {
+  //   try {
+  //     const res = await fetch("https://www.reddit.com/r/reactjs.json");
+  //     if (!res.ok) {
+  //       throw new Error(`HTTP error! status: ${res.status}`);
+  //     }
+  //     const result: RedditResponse = await res.json();
+  //     console.log(result)
+  //     return result.data.children;
+  //   } catch (error) {
+  //     setError((error as Error).message);
+  //     throw new Error((error as Error).message);
+  //   }
+  // };
 
-  if (error) {
-    return (
-      <div>
-        Rendering error: {error}
-      </div>
-    );
-  }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // const response = await connectToDb();
+  //       // setPosts(Data);
 
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // if (error) {
+  //   return (
+  //     <div>
+  //       Rendering error: {error}
+  //     </div>
+  //   );
+  // }
+
+  // console.log(posts);
   return (
     <div className={`${isDarkMode && "dark"} `}>
       <Header
